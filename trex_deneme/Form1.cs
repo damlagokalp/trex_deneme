@@ -20,13 +20,15 @@ using Size = System.Drawing.Size;
 
 namespace trex_deneme
 {
-    
+
     public partial class Form1 : Form
     {
+        List<ListViewItem> overallItems = new List<ListViewItem>();
+        private Dictionary<ListViewItem, bool> checkedItems = new Dictionary<ListViewItem, bool>();
         private List<string> OverviewItems = new List<string>();
         private Dictionary<string, int> _ListViewManager = new Dictionary<string, int>();
         int totalSelectedRowCount = 0;
-        private bool IsFullScreen=false;
+        private bool IsFullScreen = false;
         public Form1()
         {
             InitializeComponent();
@@ -43,9 +45,9 @@ namespace trex_deneme
             _ListViewManager[listViewDataLoss.Name] = 0;
             _ListViewManager[listViewPerformance.Name] = 0;
             _ListViewManager[listViewSystemResource.Name] = 0;
-         //   _ListViewManager[listViewOverall.Name]= 0;
+
             UpdateTabCount(btnAllIssues);
-            UpdateSelectedRowCount(btnTaskList);
+            // UpdateSelectedRowCount(btnTaskList);
             // UpdateFixitCount(btnFixit);
 
 
@@ -55,7 +57,7 @@ namespace trex_deneme
             tabControls.ItemSize = new Size(0, 1);
             tabControls.SizeMode = TabSizeMode.Fixed;
 
-            foreach(TabPage tab in tabControls.TabPages)
+            foreach (TabPage tab in tabControls.TabPages)
             {
                 tab.Text = "";
 
@@ -68,7 +70,9 @@ namespace trex_deneme
             SqlDataReader oku = komut.ExecuteReader();
             while (oku.Read())
             {
-                ListViewItem item = new ListViewItem(oku["type"].ToString());
+
+                ListViewItem item = new ListViewItem(oku["id"].ToString());
+                item.SubItems.Add(oku["type"].ToString());
                 item.SubItems.Add(oku["parentObject"].ToString());
                 item.SubItems.Add(oku["objectType"].ToString());
                 item.SubItems.Add(oku["object"].ToString());
@@ -83,27 +87,27 @@ namespace trex_deneme
             foreach (ListViewItem item in listViewDataLoss.Items)
             {
 
-                if (item.SubItems[0].Text == "Fragmentation")
+                if (item.SubItems[1].Text == "Fragmentation")
                 {
-                    item.BackColor = Color.FromArgb(255, 252, 131); ;
+                    item.BackColor = Color.FromArgb(255, 252, 131);
                 }
 
-                if (item.SubItems[0].Text == "Unnecessary Object")
+                if (item.SubItems[1].Text == "Unnecessary Object")
                 {
-                    item.BackColor = Color.FromArgb(31, 158, 255);
+                    item.BackColor = Color.FromArgb(143, 184, 237);
                 }
 
-                if (item.SubItems[0].Text == "Wrong Configuration")
+                if (item.SubItems[1].Text == "Wrong Configuration")
                 {
-                    item.BackColor = Color.FromArgb(222, 11, 32);
+                    item.BackColor = Color.FromArgb(224, 30, 55);
                 }
-                if (item.SubItems[0].Text == "Low Disk Space")
+                if (item.SubItems[1].Text == "Low Disk Space")
                 {
-                    item.BackColor = Color.FromArgb(4, 217, 0);
+                    item.BackColor = Color.FromArgb(128, 237, 153);
                 }
-                if (item.SubItems[0].Text == "Corruption")
+                if (item.SubItems[1].Text == "Corruption")
                 {
-                    item.BackColor = Color.FromArgb(217, 80, 208);
+                    item.BackColor = Color.FromArgb(194, 187, 240);
                 }
                 CountListView(listViewDataLoss, btnDataLoss);
 
@@ -115,7 +119,8 @@ namespace trex_deneme
             SqlDataReader oku2 = komut2.ExecuteReader();
             while (oku2.Read())
             {
-                ListViewItem item2 = new ListViewItem(oku2["type"].ToString());
+                ListViewItem item2 = new ListViewItem(oku2["id"].ToString());
+                item2.SubItems.Add(oku2["type"].ToString());
                 item2.SubItems.Add(oku2["parentObject"].ToString());
                 item2.SubItems.Add(oku2["objectType"].ToString());
                 item2.SubItems.Add(oku2["object"].ToString());
@@ -133,29 +138,29 @@ namespace trex_deneme
             foreach (ListViewItem item in listViewPerformance.Items)
             {
 
-                if (item.SubItems[0].Text == "Fragmentation")
+                if (item.SubItems[1].Text == "Fragmentation")
                 {
                     item.BackColor = Color.FromArgb(255, 252, 131);
                 }
 
-                if (item.SubItems[0].Text == "Unnecessary Object")
+                if (item.SubItems[1].Text == "Unnecessary Object")
                 {
-                    item.BackColor = Color.FromArgb(31, 158, 255);
+                    item.BackColor = Color.FromArgb(143, 184, 237);
                 }
 
-                if (item.SubItems[0].Text == "Wrong Configuration")
+                if (item.SubItems[1].Text == "Wrong Configuration")
                 {
-                    item.BackColor = Color.FromArgb(222, 11, 32);
+                    item.BackColor = Color.FromArgb(224, 30, 55);
                 }
-                if (item.SubItems[0].Text == "Low Disk Space")
+                if (item.SubItems[1].Text == "Low Disk Space")
                 {
-                    item.BackColor = Color.FromArgb(4, 217, 0);
+                    item.BackColor = Color.FromArgb(128, 237, 153);
                 }
-                if (item.SubItems[0].Text == "Corruption")
+                if (item.SubItems[1].Text == "Corruption")
                 {
-                    item.BackColor = Color.FromArgb(217, 80, 208);
+                    item.BackColor = Color.FromArgb(194, 187, 240);
                 }
-                CountListView(listViewPerformance,btnPerformance);
+                CountListView(listViewPerformance, btnPerformance);
 
             }
             //SYSTEM RESOURCE tablosu için veritabanındaki verileri okur
@@ -164,7 +169,8 @@ namespace trex_deneme
             SqlDataReader oku3 = komut3.ExecuteReader();
             while (oku3.Read())
             {
-                ListViewItem item3 = new ListViewItem(oku3["type"].ToString());
+                ListViewItem item3 = new ListViewItem(oku3["id"].ToString());
+                item3.SubItems.Add(oku3["type"].ToString());
                 item3.SubItems.Add(oku3["parentObject"].ToString());
                 item3.SubItems.Add(oku3["objectType"].ToString());
                 item3.SubItems.Add(oku3["object"].ToString());
@@ -180,30 +186,29 @@ namespace trex_deneme
             foreach (ListViewItem item in listViewSystemResource.Items)
             {
 
-                if (item.SubItems[0].Text == "Fragmentation")
+                if (item.SubItems[1].Text == "Fragmentation")
                 {
                     item.BackColor = Color.FromArgb(255, 252, 131);
                 }
 
-                if (item.SubItems[0].Text == "Unnecessary Object")
+                if (item.SubItems[1].Text == "Unnecessary Object")
                 {
-                    item.BackColor = Color.FromArgb(31, 158, 255);
+                    item.BackColor = Color.FromArgb(143, 184, 237);
                 }
-                
 
-                if (item.SubItems[0].Text == "Wrong Configuration")
+                if (item.SubItems[1].Text == "Wrong Configuration")
                 {
-                    item.BackColor = Color.FromArgb(222, 11, 32);
+                    item.BackColor = Color.FromArgb(224, 30, 55);
                 }
-                if (item.SubItems[0].Text == "Low Disk Space")
+                if (item.SubItems[1].Text == "Low Disk Space")
                 {
-                    item.BackColor = Color.FromArgb(4, 217, 0);
+                    item.BackColor = Color.FromArgb(128, 237, 153);
                 }
-                if (item.SubItems[0].Text == "Corruption")
+                if (item.SubItems[1].Text == "Corruption")
                 {
-                    item.BackColor = Color.FromArgb(217, 80, 208);
+                    item.BackColor = Color.FromArgb(194, 187, 240);
                 }
-                CountListView(listViewSystemResource,btnSystemResource);
+                CountListView(listViewSystemResource, btnSystemResource);
             }
         }
         private void btnTaskList_Clicked(object sender, EventArgs e)
@@ -269,7 +274,7 @@ namespace trex_deneme
         {
             if (mousedown)
             {
-                int mousex=MousePosition.X-400;
+                int mousex = MousePosition.X - 400;
                 int mousey = MousePosition.Y - 20;
                 this.SetDesktopLocation(mousex, mousey);
 
@@ -279,7 +284,7 @@ namespace trex_deneme
 
         private void panel2_MouseUp(object sender, MouseEventArgs e)
         {
-            mousedown=false;
+            mousedown = false;
         }
 
         private void btnMaximize_Click(object sender, EventArgs e)
@@ -330,17 +335,17 @@ namespace trex_deneme
         //count işlemi
         public void CountListView(ListView listView, ButtonNotifications button)
         {
-           int rowCount = 0;
+            int rowCount = 0;
 
             foreach (ListViewItem item in listView.Items)
             {
-                if (item.SubItems.Count > 0 && !string.IsNullOrEmpty(item.SubItems[0].Text))
+                if (item.SubItems.Count > 0 && !string.IsNullOrEmpty(item.SubItems[1].Text))
                 {
                     rowCount++;
                 }
             }
             button.LabelCount = rowCount.ToString();
-            
+
 
         }
 
@@ -349,7 +354,7 @@ namespace trex_deneme
         {
             //Tabcontroldeki tab saysınından bir ekisğini issue sayısı olarak balonvukta verir(-1 olmasının sebebi overall pagei de olması)
             int tabCount = tabControls.TabCount;
-            button.LabelCount=(tabCount-1).ToString();
+            button.LabelCount = (tabCount - 1).ToString();
         }
 
         //listview selectAll işlemi
@@ -406,11 +411,6 @@ namespace trex_deneme
             listViewOverall.Focus();
         }
 
-        //Tabcontroldeki tab sayısını yazdırmak için
-        private void tabControlPerformance_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            UpdateTabCount(btnAllIssues);
-        }
 
         //Task list butonunda checklenen satırların sayısını verme
         private int GetCheckItemCount(ListView listView)
@@ -418,11 +418,11 @@ namespace trex_deneme
             int counter = 0;
             foreach (ListViewItem item in listView.Items)
             {
-                if (item.Checked == true) 
+                if (item.Checked == true)
                 {
-                    counter++;                  
+                    counter++;
                 }
-                DoListThing(item, item.Checked);
+                //DoListThing(item, item.Checked);
             }
             int returnValue = 0;
             _ListViewManager[listView.Name] = counter;
@@ -431,18 +431,21 @@ namespace trex_deneme
                 returnValue += count;
             }
             return returnValue;
-           
-
         }
 
+
+
+
         //Overall e diğer listview deki satırları ekleyip çıkarma işlemi
-        private void DoListThing(ListViewItem item, bool isChecked) {
+        private void DoListThing(ListViewItem item, bool isChecked)
+        {
 
             string satir = "";
             foreach (ListViewItem.ListViewSubItem subItem in item.SubItems)
             {
                 satir += subItem.Text + " ";
             }
+
             OverviewItems.Contains(satir);
             if (isChecked)
             {
@@ -460,27 +463,66 @@ namespace trex_deneme
             }
             //her sefeerinde yeni liste oluşturuyor ? sorun çıkarır mı
             listViewOverall.Items.Clear();
-            foreach(string text in OverviewItems)
+            foreach (string text in OverviewItems)
             {
 
                 listViewOverall.Items.Add(text);
             }
-           
         }
 
         /////////////////////////
         private void UpdateSelectedRowCount(ButtonNotifications button)
         {
             TabPage page = tabControls.SelectedTab;
-       
-            foreach (Control cntrl in page.Controls) {
+
+            foreach (Control cntrl in page.Controls)
+            {
                 if (cntrl.GetType() == typeof(ListView))
                 {
-                  button.LabelCount =  GetCheckItemCount((cntrl as ListView)).ToString();
+                    button.LabelCount = GetCheckItemCount((cntrl as ListView)).ToString();
                 }
-          //  GetCheckItemCount(listView);
+                //  GetCheckItemCount(listView);
             }
         }
+
+        //ADD QUEUE İÇİN
+
+        private void UpdateAddQueueCount(ButtonNotifications button)
+        {
+            TabPage page = tabControls.SelectedTab;
+
+            foreach (Control cntrl in page.Controls)
+            {
+                if (cntrl.GetType() == typeof(ListView))
+                {
+                    button.LabelCount = GetAddQueueCheckItemCount((cntrl as ListView)).ToString();
+                }
+                //  GetCheckItemCount(listView);
+            }
+        }
+        //Add Queue butonunda checklenen satırların sayısını verme ve seçilen satırları Task list listesine yazdırma
+        private int GetAddQueueCheckItemCount(ListView listView)
+        {
+
+            int counter = 0;
+            foreach (ListViewItem item in listView.Items)
+            {
+                if (item.Checked == true)
+                {
+                    counter++;
+                }
+                //  DoListThing(item, item.Checked);
+            }
+            int returnValue = 0;
+            _ListViewManager[listView.Name] = counter;
+            foreach (int count in _ListViewManager.Values)
+            {
+                returnValue += count;
+            }
+            return returnValue;
+        }
+
+
 
         private void UpdateOverallCount(ButtonNotifications button)
         {
@@ -501,32 +543,110 @@ namespace trex_deneme
             foreach (ListViewItem item in listView.Items)
             {
 
-                if(item !=null) { 
-                if (item.Checked == true)
+                if (item != null)
                 {
-                    counter++;
-                }
+                    if (item.Checked == true)
+                    {
+                        counter++;
+                    }
                 }
                 //   DoListThing(item, item.Checked);
-            } 
+            }
             return counter;
+
         }
 
         private void listViewDataLoss_ItemChecked(object sender, ItemCheckedEventArgs e)
         {
-            UpdateSelectedRowCount(btnTaskList);
+           // UpdateSelectedRowCount(btnTaskList);
+            UpdateAddQueueCount(btnAddQueue);
+
+            
+
+            ////////////////////////////////////
+            /// buton add queue ye tıkladıktan sonra listview overall'e eklemek için 
+            if (!checkedItems.ContainsKey(e.Item))
+            {
+                checkedItems.Add(e.Item, e.Item.Checked); // CheckBox durumunu sakla
+            }
+            else
+            {
+                checkedItems[e.Item] = e.Item.Checked; // CheckBox durumunu güncelle
+            }
+            // Eğer CheckBox işaret durumu değiştiyse, listViewOverall'deki ilgili öğeyi güncelle
+            if (!e.Item.Checked)
+            {
+                foreach (ListViewItem item in listViewOverall.Items)
+                {
+                    if (item.Text == e.Item.Text)
+                    {
+                        listViewOverall.Items.Remove(item);
+                        break;
+                    }
+                }
+            }
+
         }
 
-        private void listViewOverall_ItemChecked(object sender, ItemCheckedEventArgs e)
+      
+        private void listViewOverall_ItemChecked_1(object sender, ItemCheckedEventArgs e)
         {
             UpdateOverallCount(btnFixit);
         }
 
-     
+        // addqueue butonuna tıkladıktan sonra listeye eklemek için 
+        private void btnAddQueue_Clicked(object sender, EventArgs e)
+        {
+            //UpdateAddQueueCount(btnAddQueue);
+            UpdateSelectedRowCount(btnTaskList);
+            UpdateOverallCount(btnFixit);
+
+            // her öğe için kontrol
+            foreach (var pair in checkedItems)
+            {
+                // Eğer CheckBox işaretliyse ve listViewOverall'de yoksa, öğeyi listViewOverall'e ekle
+                if (pair.Value && !listViewOverall.Items.ContainsKey(pair.Key.Text))
+                {
+                    ListViewItem newItem = (ListViewItem)pair.Key.Clone();
+                    listViewOverall.Items.Add(newItem);
+                    newItem.Checked = false;
+                    
+                    overallItems.Add(newItem);
+                }
+                // listViewOverall'den kaldır
+                else if (!pair.Value && listViewOverall.Items.ContainsKey(pair.Key.Text))
+                {
+                    listViewOverall.Items.RemoveByKey(pair.Key.Text);
+                    // listViewOverall'den kaldırılan öğeyi overallItems koleksiyonundan kaldırma
+                    ListViewItem removedItem = overallItems.Find(item => item.Text == pair.Key.Text);
+                    overallItems.Remove(removedItem);
+                }
+            }
+           
+
+            // Arka plandaki seçili öğelerin temizlenmesi
+            checkedItems.Clear();
+
+        }
+        // listViewOverall'deki öğeleri yeniden yüklemek için bir yöntem
+        private void ReloadOverallItems()
+        {
+            listViewOverall.Items.Clear();
+            listViewOverall.Items.AddRange(overallItems.ToArray());
+        }
+        private void btnTaskList_Click(object sender, EventArgs e)
+
+        {  //// listViewOverall'de seçilen satırların sabit kalması ve checkboxlarının işaretlenmemesi
+
+            foreach (ListViewItem item in listViewOverall.Items)
+            {
+                // item.Selected = false;
+                item.Checked = false;
+            }
+
+          
+        }
 
         
     }
-
-    }
-
-    
+}  

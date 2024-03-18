@@ -35,15 +35,26 @@ namespace trex_deneme
             this.label5 = new System.Windows.Forms.Label();
             this.panel2 = new System.Windows.Forms.Panel();
             this.SysButtonsPnl = new System.Windows.Forms.Panel();
+            this.btnMinimize = new trex_deneme.UI.SysButton();
+            this.btnMaximize = new trex_deneme.UI.SysButton();
+            this.btnExit = new trex_deneme.UI.SysButton();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.btnDataLossCheck = new System.Windows.Forms.Button();
             this.tabPageOverall = new System.Windows.Forms.TabPage();
             this.btnOverallCheck = new System.Windows.Forms.Button();
             this.listViewOverall = new System.Windows.Forms.ListView();
             this.columnHeader22 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.columnHeader26 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.columnHeader27 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.columnHeader28 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.columnHeader29 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.columnHeader30 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.columnHeader31 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.columnHeader32 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.tabPageSystemResource = new System.Windows.Forms.TabPage();
             this.btnSystemResourceCheck = new System.Windows.Forms.Button();
             this.listViewSystemResource = new System.Windows.Forms.ListView();
+            this.columnHeader25 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.columnHeader8 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.columnHeader9 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.columnHeader10 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
@@ -54,6 +65,7 @@ namespace trex_deneme
             this.tabPagePerformance = new System.Windows.Forms.TabPage();
             this.btnPerformanceCheck = new System.Windows.Forms.Button();
             this.listViewPerformance = new System.Windows.Forms.ListView();
+            this.columnHeader24 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.columnHeader1 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.columnHeader2 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.columnHeader3 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
@@ -63,6 +75,7 @@ namespace trex_deneme
             this.columnHeader7 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.tabPageDataLoss = new System.Windows.Forms.TabPage();
             this.listViewDataLoss = new System.Windows.Forms.ListView();
+            this.columnHeader23 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.columnHeader15 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.columnHeader16 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.columnHeader17 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
@@ -75,14 +88,12 @@ namespace trex_deneme
             this.panel1 = new trex_deneme.UI.TransparentPanel();
             this.btnAllIssues = new trex_deneme.UI.ButtonNotifications();
             this.pnlLeftButtons = new trex_deneme.UI.TransparentPanel();
+            this.btnAddQueue = new trex_deneme.UI.ButtonNotifications();
             this.btnFixit = new trex_deneme.UI.ButtonNotifications();
             this.btnTaskList = new trex_deneme.UI.ButtonNotifications();
             this.btnSystemResource = new trex_deneme.UI.ButtonNotifications();
             this.btnPerformance = new trex_deneme.UI.ButtonNotifications();
             this.btnDataLoss = new trex_deneme.UI.ButtonNotifications();
-            this.btnMinimize = new trex_deneme.UI.SysButton();
-            this.btnMaximize = new trex_deneme.UI.SysButton();
-            this.btnExit = new trex_deneme.UI.SysButton();
             this.buttonNotifications1 = new trex_deneme.UI.ButtonNotifications();
             this.panel2.SuspendLayout();
             this.SysButtonsPnl.SuspendLayout();
@@ -144,6 +155,45 @@ namespace trex_deneme
             this.SysButtonsPnl.Size = new System.Drawing.Size(139, 47);
             this.SysButtonsPnl.TabIndex = 13;
             // 
+            // btnMinimize
+            // 
+            this.btnMinimize.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(62)))), ((int)(((byte)(137)))), ((int)(((byte)(20)))));
+            this.btnMinimize.ButtonBackgroundColor = System.Drawing.Color.FromArgb(((int)(((byte)(62)))), ((int)(((byte)(137)))), ((int)(((byte)(20)))));
+            this.btnMinimize.ButtonImage = ((System.Drawing.Image)(resources.GetObject("btnMinimize.ButtonImage")));
+            this.btnMinimize.Dock = System.Windows.Forms.DockStyle.Right;
+            this.btnMinimize.Location = new System.Drawing.Point(20, 5);
+            this.btnMinimize.Name = "btnMinimize";
+            this.btnMinimize.Padding = new System.Windows.Forms.Padding(5);
+            this.btnMinimize.Size = new System.Drawing.Size(36, 37);
+            this.btnMinimize.TabIndex = 16;
+            this.btnMinimize.Clicked += new System.EventHandler(this.btnMinimize_Click);
+            // 
+            // btnMaximize
+            // 
+            this.btnMaximize.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(62)))), ((int)(((byte)(137)))), ((int)(((byte)(20)))));
+            this.btnMaximize.ButtonBackgroundColor = System.Drawing.Color.FromArgb(((int)(((byte)(62)))), ((int)(((byte)(137)))), ((int)(((byte)(20)))));
+            this.btnMaximize.ButtonImage = ((System.Drawing.Image)(resources.GetObject("btnMaximize.ButtonImage")));
+            this.btnMaximize.Dock = System.Windows.Forms.DockStyle.Right;
+            this.btnMaximize.Location = new System.Drawing.Point(56, 5);
+            this.btnMaximize.Name = "btnMaximize";
+            this.btnMaximize.Padding = new System.Windows.Forms.Padding(5);
+            this.btnMaximize.Size = new System.Drawing.Size(39, 37);
+            this.btnMaximize.TabIndex = 15;
+            this.btnMaximize.Clicked += new System.EventHandler(this.btnMaximize_Click);
+            // 
+            // btnExit
+            // 
+            this.btnExit.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(62)))), ((int)(((byte)(137)))), ((int)(((byte)(20)))));
+            this.btnExit.ButtonBackgroundColor = System.Drawing.Color.FromArgb(((int)(((byte)(62)))), ((int)(((byte)(137)))), ((int)(((byte)(20)))));
+            this.btnExit.ButtonImage = ((System.Drawing.Image)(resources.GetObject("btnExit.ButtonImage")));
+            this.btnExit.Dock = System.Windows.Forms.DockStyle.Right;
+            this.btnExit.Location = new System.Drawing.Point(95, 5);
+            this.btnExit.Name = "btnExit";
+            this.btnExit.Padding = new System.Windows.Forms.Padding(5);
+            this.btnExit.Size = new System.Drawing.Size(39, 37);
+            this.btnExit.TabIndex = 14;
+            this.btnExit.Clicked += new System.EventHandler(this.btnExit_Click);
+            // 
             // pictureBox1
             // 
             this.pictureBox1.BackColor = System.Drawing.Color.Transparent;
@@ -198,25 +248,75 @@ namespace trex_deneme
             // 
             // listViewOverall
             // 
+            this.listViewOverall.BackColor = System.Drawing.SystemColors.Window;
             this.listViewOverall.CheckBoxes = true;
             this.listViewOverall.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
-            this.columnHeader22});
+            this.columnHeader22,
+            this.columnHeader26,
+            this.columnHeader27,
+            this.columnHeader28,
+            this.columnHeader29,
+            this.columnHeader30,
+            this.columnHeader31,
+            this.columnHeader32});
             this.listViewOverall.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.listViewOverall.Font = new System.Drawing.Font("Tahoma", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(162)));
             this.listViewOverall.FullRowSelect = true;
             this.listViewOverall.GridLines = true;
             this.listViewOverall.HideSelection = false;
             this.listViewOverall.Location = new System.Drawing.Point(3, 3);
             this.listViewOverall.Name = "listViewOverall";
             this.listViewOverall.Size = new System.Drawing.Size(1005, 607);
-            this.listViewOverall.TabIndex = 2;
+            this.listViewOverall.TabIndex = 7;
             this.listViewOverall.UseCompatibleStateImageBehavior = false;
             this.listViewOverall.View = System.Windows.Forms.View.Details;
-            this.listViewOverall.ItemChecked += new System.Windows.Forms.ItemCheckedEventHandler(this.listViewOverall_ItemChecked);
+            this.listViewOverall.ItemChecked += new System.Windows.Forms.ItemCheckedEventHandler(this.listViewOverall_ItemChecked_1);
             // 
             // columnHeader22
             // 
-            this.columnHeader22.Text = "        WARNINGS";
-            this.columnHeader22.Width = 1058;
+            this.columnHeader22.Text = "        ID";
+            this.columnHeader22.Width = 85;
+            // 
+            // columnHeader26
+            // 
+            this.columnHeader26.Text = "         Issue Type";
+            this.columnHeader26.Width = 150;
+            // 
+            // columnHeader27
+            // 
+            this.columnHeader27.Text = "Issue Parent Object";
+            this.columnHeader27.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.columnHeader27.Width = 150;
+            // 
+            // columnHeader28
+            // 
+            this.columnHeader28.Text = "Object Type";
+            this.columnHeader28.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.columnHeader28.Width = 150;
+            // 
+            // columnHeader29
+            // 
+            this.columnHeader29.Text = "Issue Object";
+            this.columnHeader29.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.columnHeader29.Width = 150;
+            // 
+            // columnHeader30
+            // 
+            this.columnHeader30.Text = "Ratio";
+            this.columnHeader30.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.columnHeader30.Width = 150;
+            // 
+            // columnHeader31
+            // 
+            this.columnHeader31.Text = "Description";
+            this.columnHeader31.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.columnHeader31.Width = 400;
+            // 
+            // columnHeader32
+            // 
+            this.columnHeader32.Text = "Is Fixible";
+            this.columnHeader32.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.columnHeader32.Width = 75;
             // 
             // tabPageSystemResource
             // 
@@ -246,6 +346,7 @@ namespace trex_deneme
             // 
             this.listViewSystemResource.CheckBoxes = true;
             this.listViewSystemResource.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
+            this.columnHeader25,
             this.columnHeader8,
             this.columnHeader9,
             this.columnHeader10,
@@ -265,6 +366,11 @@ namespace trex_deneme
             this.listViewSystemResource.UseCompatibleStateImageBehavior = false;
             this.listViewSystemResource.View = System.Windows.Forms.View.Details;
             this.listViewSystemResource.ItemChecked += new System.Windows.Forms.ItemCheckedEventHandler(this.listViewDataLoss_ItemChecked);
+            // 
+            // columnHeader25
+            // 
+            this.columnHeader25.Text = "        ID";
+            this.columnHeader25.Width = 85;
             // 
             // columnHeader8
             // 
@@ -299,7 +405,7 @@ namespace trex_deneme
             // 
             this.columnHeader13.Text = "Description";
             this.columnHeader13.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            this.columnHeader13.Width = 470;
+            this.columnHeader13.Width = 400;
             // 
             // columnHeader14
             // 
@@ -335,6 +441,7 @@ namespace trex_deneme
             // 
             this.listViewPerformance.CheckBoxes = true;
             this.listViewPerformance.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
+            this.columnHeader24,
             this.columnHeader1,
             this.columnHeader2,
             this.columnHeader3,
@@ -354,6 +461,11 @@ namespace trex_deneme
             this.listViewPerformance.UseCompatibleStateImageBehavior = false;
             this.listViewPerformance.View = System.Windows.Forms.View.Details;
             this.listViewPerformance.ItemChecked += new System.Windows.Forms.ItemCheckedEventHandler(this.listViewDataLoss_ItemChecked);
+            // 
+            // columnHeader24
+            // 
+            this.columnHeader24.Text = "        ID";
+            this.columnHeader24.Width = 85;
             // 
             // columnHeader1
             // 
@@ -388,7 +500,7 @@ namespace trex_deneme
             // 
             this.columnHeader6.Text = "Description";
             this.columnHeader6.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            this.columnHeader6.Width = 470;
+            this.columnHeader6.Width = 400;
             // 
             // columnHeader7
             // 
@@ -415,6 +527,7 @@ namespace trex_deneme
             this.listViewDataLoss.BackColor = System.Drawing.SystemColors.Window;
             this.listViewDataLoss.CheckBoxes = true;
             this.listViewDataLoss.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
+            this.columnHeader23,
             this.columnHeader15,
             this.columnHeader16,
             this.columnHeader17,
@@ -434,6 +547,11 @@ namespace trex_deneme
             this.listViewDataLoss.UseCompatibleStateImageBehavior = false;
             this.listViewDataLoss.View = System.Windows.Forms.View.Details;
             this.listViewDataLoss.ItemChecked += new System.Windows.Forms.ItemCheckedEventHandler(this.listViewDataLoss_ItemChecked);
+            // 
+            // columnHeader23
+            // 
+            this.columnHeader23.Text = "        ID";
+            this.columnHeader23.Width = 85;
             // 
             // columnHeader15
             // 
@@ -468,7 +586,7 @@ namespace trex_deneme
             // 
             this.columnHeader21.Text = "Description";
             this.columnHeader21.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            this.columnHeader21.Width = 470;
+            this.columnHeader21.Width = 400;
             // 
             // columnHeader20
             // 
@@ -499,7 +617,6 @@ namespace trex_deneme
             this.tabControls.SelectedIndex = 0;
             this.tabControls.Size = new System.Drawing.Size(1019, 644);
             this.tabControls.TabIndex = 0;
-            this.tabControls.SelectedIndexChanged += new System.EventHandler(this.tabControlPerformance_SelectedIndexChanged);
             // 
             // panel1
             // 
@@ -521,7 +638,7 @@ namespace trex_deneme
             this.btnAllIssues.ButtonBackgroundColor = System.Drawing.Color.FromArgb(((int)(((byte)(61)))), ((int)(((byte)(163)))), ((int)(((byte)(93)))));
             this.btnAllIssues.ButtonImage = null;
             this.btnAllIssues.ButtonLabelColor = System.Drawing.Color.White;
-            this.btnAllIssues.CircleBackgroundColor = System.Drawing.Color.FromArgb(((int)(((byte)(170)))), ((int)(((byte)(246)))), ((int)(((byte)(131)))));
+            this.btnAllIssues.CircleBackgroundColor = System.Drawing.Color.FromArgb(((int)(((byte)(62)))), ((int)(((byte)(137)))), ((int)(((byte)(20)))));
             this.btnAllIssues.CircleLabelColor = System.Drawing.Color.White;
             this.btnAllIssues.Font = new System.Drawing.Font("Arial Rounded MT Bold", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnAllIssues.ForeColor = System.Drawing.Color.Black;
@@ -535,6 +652,7 @@ namespace trex_deneme
             // 
             // pnlLeftButtons
             // 
+            this.pnlLeftButtons.Controls.Add(this.btnAddQueue);
             this.pnlLeftButtons.Controls.Add(this.btnFixit);
             this.pnlLeftButtons.Controls.Add(this.btnTaskList);
             this.pnlLeftButtons.Dock = System.Windows.Forms.DockStyle.Bottom;
@@ -544,19 +662,37 @@ namespace trex_deneme
             this.pnlLeftButtons.Size = new System.Drawing.Size(296, 127);
             this.pnlLeftButtons.TabIndex = 17;
             // 
+            // btnAddQueue
+            // 
+            this.btnAddQueue.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(61)))), ((int)(((byte)(163)))), ((int)(((byte)(93)))));
+            this.btnAddQueue.ButtonBackgroundColor = System.Drawing.Color.FromArgb(((int)(((byte)(61)))), ((int)(((byte)(163)))), ((int)(((byte)(93)))));
+            this.btnAddQueue.ButtonImage = null;
+            this.btnAddQueue.ButtonLabelColor = System.Drawing.Color.White;
+            this.btnAddQueue.CircleBackgroundColor = System.Drawing.Color.FromArgb(((int)(((byte)(62)))), ((int)(((byte)(137)))), ((int)(((byte)(20)))));
+            this.btnAddQueue.CircleLabelColor = System.Drawing.Color.White;
+            this.btnAddQueue.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(162)));
+            this.btnAddQueue.ForeColor = System.Drawing.Color.Black;
+            this.btnAddQueue.LabelCount = null;
+            this.btnAddQueue.LabelText = "        ADD QUEUE";
+            this.btnAddQueue.Location = new System.Drawing.Point(12, 3);
+            this.btnAddQueue.Name = "btnAddQueue";
+            this.btnAddQueue.Size = new System.Drawing.Size(272, 36);
+            this.btnAddQueue.TabIndex = 24;
+            this.btnAddQueue.Clicked += new System.EventHandler(this.btnAddQueue_Clicked);
+            // 
             // btnFixit
             // 
             this.btnFixit.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(61)))), ((int)(((byte)(163)))), ((int)(((byte)(93)))));
             this.btnFixit.ButtonBackgroundColor = System.Drawing.Color.FromArgb(((int)(((byte)(61)))), ((int)(((byte)(163)))), ((int)(((byte)(93)))));
             this.btnFixit.ButtonImage = null;
             this.btnFixit.ButtonLabelColor = System.Drawing.Color.White;
-            this.btnFixit.CircleBackgroundColor = System.Drawing.Color.FromArgb(((int)(((byte)(170)))), ((int)(((byte)(246)))), ((int)(((byte)(131)))));
+            this.btnFixit.CircleBackgroundColor = System.Drawing.Color.FromArgb(((int)(((byte)(62)))), ((int)(((byte)(137)))), ((int)(((byte)(20)))));
             this.btnFixit.CircleLabelColor = System.Drawing.Color.White;
             this.btnFixit.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(162)));
             this.btnFixit.ForeColor = System.Drawing.Color.Black;
             this.btnFixit.LabelCount = null;
             this.btnFixit.LabelText = "          FIX IT";
-            this.btnFixit.Location = new System.Drawing.Point(12, 45);
+            this.btnFixit.Location = new System.Drawing.Point(12, 87);
             this.btnFixit.Name = "btnFixit";
             this.btnFixit.Size = new System.Drawing.Size(272, 36);
             this.btnFixit.TabIndex = 24;
@@ -567,17 +703,18 @@ namespace trex_deneme
             this.btnTaskList.ButtonBackgroundColor = System.Drawing.Color.FromArgb(((int)(((byte)(61)))), ((int)(((byte)(163)))), ((int)(((byte)(93)))));
             this.btnTaskList.ButtonImage = null;
             this.btnTaskList.ButtonLabelColor = System.Drawing.Color.White;
-            this.btnTaskList.CircleBackgroundColor = System.Drawing.Color.FromArgb(((int)(((byte)(170)))), ((int)(((byte)(246)))), ((int)(((byte)(131)))));
+            this.btnTaskList.CircleBackgroundColor = System.Drawing.Color.FromArgb(((int)(((byte)(62)))), ((int)(((byte)(137)))), ((int)(((byte)(20)))));
             this.btnTaskList.CircleLabelColor = System.Drawing.Color.White;
             this.btnTaskList.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(162)));
             this.btnTaskList.ForeColor = System.Drawing.Color.Black;
             this.btnTaskList.LabelCount = null;
             this.btnTaskList.LabelText = "         TASK LIST";
-            this.btnTaskList.Location = new System.Drawing.Point(12, 3);
+            this.btnTaskList.Location = new System.Drawing.Point(12, 45);
             this.btnTaskList.Name = "btnTaskList";
             this.btnTaskList.Size = new System.Drawing.Size(272, 36);
             this.btnTaskList.TabIndex = 23;
             this.btnTaskList.Clicked += new System.EventHandler(this.btnTaskList_Clicked);
+            this.btnTaskList.Click += new System.EventHandler(this.btnTaskList_Click);
             // 
             // btnSystemResource
             // 
@@ -625,50 +762,11 @@ namespace trex_deneme
             this.btnDataLoss.ForeColor = System.Drawing.Color.Black;
             this.btnDataLoss.LabelCount = null;
             this.btnDataLoss.LabelText = "Data Loss";
-            this.btnDataLoss.Location = new System.Drawing.Point(12, 119);
+            this.btnDataLoss.Location = new System.Drawing.Point(12, 120);
             this.btnDataLoss.Name = "btnDataLoss";
             this.btnDataLoss.Size = new System.Drawing.Size(272, 36);
             this.btnDataLoss.TabIndex = 14;
             this.btnDataLoss.Clicked += new System.EventHandler(this.btnDataLoss_Clicked);
-            // 
-            // btnMinimize
-            // 
-            this.btnMinimize.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(62)))), ((int)(((byte)(137)))), ((int)(((byte)(20)))));
-            this.btnMinimize.ButtonBackgroundColor = System.Drawing.Color.FromArgb(((int)(((byte)(62)))), ((int)(((byte)(137)))), ((int)(((byte)(20)))));
-            this.btnMinimize.ButtonImage = ((System.Drawing.Image)(resources.GetObject("btnMinimize.ButtonImage")));
-            this.btnMinimize.Dock = System.Windows.Forms.DockStyle.Right;
-            this.btnMinimize.Location = new System.Drawing.Point(20, 5);
-            this.btnMinimize.Name = "btnMinimize";
-            this.btnMinimize.Padding = new System.Windows.Forms.Padding(5);
-            this.btnMinimize.Size = new System.Drawing.Size(36, 37);
-            this.btnMinimize.TabIndex = 16;
-            this.btnMinimize.Clicked += new System.EventHandler(this.btnMinimize_Click);
-            // 
-            // btnMaximize
-            // 
-            this.btnMaximize.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(62)))), ((int)(((byte)(137)))), ((int)(((byte)(20)))));
-            this.btnMaximize.ButtonBackgroundColor = System.Drawing.Color.FromArgb(((int)(((byte)(62)))), ((int)(((byte)(137)))), ((int)(((byte)(20)))));
-            this.btnMaximize.ButtonImage = ((System.Drawing.Image)(resources.GetObject("btnMaximize.ButtonImage")));
-            this.btnMaximize.Dock = System.Windows.Forms.DockStyle.Right;
-            this.btnMaximize.Location = new System.Drawing.Point(56, 5);
-            this.btnMaximize.Name = "btnMaximize";
-            this.btnMaximize.Padding = new System.Windows.Forms.Padding(5);
-            this.btnMaximize.Size = new System.Drawing.Size(39, 37);
-            this.btnMaximize.TabIndex = 15;
-            this.btnMaximize.Clicked += new System.EventHandler(this.btnMaximize_Click);
-            // 
-            // btnExit
-            // 
-            this.btnExit.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(62)))), ((int)(((byte)(137)))), ((int)(((byte)(20)))));
-            this.btnExit.ButtonBackgroundColor = System.Drawing.Color.FromArgb(((int)(((byte)(62)))), ((int)(((byte)(137)))), ((int)(((byte)(20)))));
-            this.btnExit.ButtonImage = ((System.Drawing.Image)(resources.GetObject("btnExit.ButtonImage")));
-            this.btnExit.Dock = System.Windows.Forms.DockStyle.Right;
-            this.btnExit.Location = new System.Drawing.Point(95, 5);
-            this.btnExit.Name = "btnExit";
-            this.btnExit.Padding = new System.Windows.Forms.Padding(5);
-            this.btnExit.Size = new System.Drawing.Size(39, 37);
-            this.btnExit.TabIndex = 14;
-            this.btnExit.Clicked += new System.EventHandler(this.btnExit_Click);
             // 
             // buttonNotifications1
             // 
@@ -732,8 +830,6 @@ namespace trex_deneme
         private SysButton btnMaximize;
         private TransparentPanel pnlLeftButtons;
         private System.Windows.Forms.TabPage tabPageOverall;
-        private System.Windows.Forms.ListView listViewOverall;
-        private System.Windows.Forms.ColumnHeader columnHeader22;
         private System.Windows.Forms.TabPage tabPageSystemResource;
         private System.Windows.Forms.ListView listViewSystemResource;
         private System.Windows.Forms.ColumnHeader columnHeader8;
@@ -771,6 +867,19 @@ namespace trex_deneme
         private System.Windows.Forms.Button btnPerformanceCheck;
         private System.Windows.Forms.Button btnOverallCheck;
         private System.Windows.Forms.Button btnSystemResourceCheck;
+        private ButtonNotifications btnAddQueue;
+        private System.Windows.Forms.ColumnHeader columnHeader23;
+        private System.Windows.Forms.ColumnHeader columnHeader25;
+        private System.Windows.Forms.ColumnHeader columnHeader24;
+        private System.Windows.Forms.ListView listViewOverall;
+        private System.Windows.Forms.ColumnHeader columnHeader22;
+        private System.Windows.Forms.ColumnHeader columnHeader26;
+        private System.Windows.Forms.ColumnHeader columnHeader27;
+        private System.Windows.Forms.ColumnHeader columnHeader28;
+        private System.Windows.Forms.ColumnHeader columnHeader29;
+        private System.Windows.Forms.ColumnHeader columnHeader30;
+        private System.Windows.Forms.ColumnHeader columnHeader31;
+        private System.Windows.Forms.ColumnHeader columnHeader32;
     }
 }
 
