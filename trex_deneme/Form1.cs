@@ -623,12 +623,10 @@ namespace trex_deneme
                 }
             }
            
-
-            // Arka plandaki seçili öğelerin temizlenmesi
             checkedItems.Clear();
 
         }
-        // listViewOverall'deki öğeleri yeniden yüklemek için bir yöntem
+        // listViewOverall'deki öğeleri yeniden yükleme
         private void ReloadOverallItems()
         {
             listViewOverall.Items.Clear();
@@ -636,8 +634,7 @@ namespace trex_deneme
         }
         private void btnTaskList_Click(object sender, EventArgs e)
 
-        {  //// listViewOverall'de seçilen satırların sabit kalması ve checkboxlarının işaretlenmemesi
-
+        { 
             foreach (ListViewItem item in listViewOverall.Items)
             {
                 // item.Selected = false;
