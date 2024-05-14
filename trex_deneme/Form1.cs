@@ -4,6 +4,7 @@ using System.ComponentModel;
 using System.Data;
 using System.Data.SqlClient;
 using System.Drawing;
+using System.IO;
 using System.IO.Ports;
 using System.Linq;
 using System.Linq.Expressions;
@@ -21,35 +22,46 @@ using Size = System.Drawing.Size;
 namespace trex_deneme
 {
 
-    public partial class Form1 : Form
+    public partial class FormMain : Form
     {
         List<ListViewItem> overallItems = new List<ListViewItem>();
-        private Dictionary<ListViewItem, bool> checkedItems = new Dictionary<ListViewItem, bool>();
-        private List<string> OverviewItems = new List<string>();
-        private Dictionary<string, int> _ListViewManager = new Dictionary<string, int>();
+        private Dictionary<ListViewItem, bool> _checkedItems = new Dictionary<ListViewItem, bool>();
+        private List<string> _overviewItems = new List<string>();
+        private Dictionary<string, int> _listViewManager = new Dictionary<string, int>();
         int totalSelectedRowCount = 0;
         private bool IsFullScreen = false;
-        public Form1()
+        private static string connectionString=string.Empty;
+        SqlConnection baglanti = new SqlConnection(connectionString);
+
+         ControlResizer controlResizer = new ControlResizer();
+
+
+        public FormMain(string connection)
         {
             InitializeComponent();
+            connectionString = connection;
+           // btnSystemResource.Click += btnSystemResource_Clicked;
 
         }
+        //@"Data Source=(local); Initial Catalog=TREXOPTIMIZER; Integrated Security=false;user id=sa;password=123"
+        //  SqlConnection baglanti = new SqlConnection(connectionString);
 
-        SqlConnection baglanti = new SqlConnection(@"Data Source=(local); Initial Catalog=TREXOPTIMIZER; Integrated Security=false;user id=sa;password=123");
+         SqlConnectionParameters sqlConnectionParameters = new SqlConnectionParameters();
 
-
-
+       
 
         private void Form1_Load(object sender, EventArgs e)
         {
-            _ListViewManager[listViewDataLoss.Name] = 0;
-            _ListViewManager[listViewPerformance.Name] = 0;
-            _ListViewManager[listViewSystemResource.Name] = 0;
+             baglanti = new SqlConnection(connectionString);
+            _listViewManager[listViewDataLoss.Name] = 0;
+            _listViewManager[listViewPerformance.Name] = 0;
+            _listViewManager[listViewSystemResource.Name] = 0;
 
             UpdateTabCount(btnAllIssues);
             // UpdateSelectedRowCount(btnTaskList);
             // UpdateFixitCount(btnFixit);
 
+            ControlResizer.ReSizeControl(this, this);
 
 
             //tabpageler gizlendi
@@ -63,207 +75,319 @@ namespace trex_deneme
 
             }
 
-            //DATALOSS tablosu için veritabanındaki verileri okur
+               // Bağlantıyı aç
 
-            baglanti.Open();
-            SqlCommand komut = new SqlCommand("select * from DATALOSS", baglanti);
-            SqlDataReader oku = komut.ExecuteReader();
-            while (oku.Read())
+                // Seçilen veritabanındaki tüm tabloları almak için sorgu oluştur
+                baglanti.Open();
+                SqlCommand command = new SqlCommand("SELECT TABLE_NAME FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_TYPE = 'BASE TABLE'", baglanti);
+
+                // Tabloları al
+                List<string> tables = new List<string>();
+                using (SqlDataReader oku = command.ExecuteReader())
+                {
+                    while (oku.Read())
+                    {
+
+                    tables.Add(oku["TABLE_NAME"].ToString());
+
+                    
+                    }
+                }
+
+            // Her bir tabloyu döngüyle işle
+            foreach (string table in tables)
             {
+                // Tabloya ait verileri çekmek için sorgu oluştur
+                SqlCommand tableCommand = new SqlCommand($"SELECT * FROM {table}", baglanti);
+                SqlDataReader oku = tableCommand.ExecuteReader();
 
-                ListViewItem item = new ListViewItem(oku["id"].ToString());
-                item.SubItems.Add(oku["type"].ToString());
-                item.SubItems.Add(oku["parentObject"].ToString());
-                item.SubItems.Add(oku["objectType"].ToString());
-                item.SubItems.Add(oku["object"].ToString());
-                item.SubItems.Add(oku["ratio"].ToString());
-                item.SubItems.Add(oku["description"].ToString());
-                item.SubItems.Add(oku["isFixible"].ToString());
+                // ListView'e verileri ekle
+                while (oku.Read())
+                {
+                    ListViewItem item = new ListViewItem(oku["id"].ToString());
+                    item.SubItems.Add(oku["type"].ToString());
+                    item.SubItems.Add(oku["parentObject"].ToString());
+                    item.SubItems.Add(oku["objectType"].ToString());
+                    item.SubItems.Add(oku["object"].ToString());
+                    item.SubItems.Add(oku["ratio"].ToString());
+                    item.SubItems.Add(oku["description"].ToString());
+                    item.SubItems.Add(oku["isFixible"].ToString());
 
-                listViewDataLoss.Items.Add(item);
+                    listViewDataLoss.Items.Add(item);
+                  
+                }
+
+                oku.Close(); // Okuyucuyu kapat
             }
             baglanti.Close();
-            //Renklendirme
+
+            ////DATALOSS tablosu için veritabanındaki verileri okur
+
+            //baglanti.Open();
+            //SqlCommand komut = new SqlCommand("select * from DATALOSS", baglanti);
+            //SqlDataReader oku = komut.ExecuteReader();
+            //while (oku.Read())
+            //{
+
+            //    ListViewItem item = new ListViewItem(oku["id"].ToString());
+            //    item.SubItems.Add(oku["type"].ToString());
+            //    item.SubItems.Add(oku["parentObject"].ToString());
+            //    item.SubItems.Add(oku["objectType"].ToString());
+            //    item.SubItems.Add(oku["object"].ToString());
+            //    item.SubItems.Add(oku["ratio"].ToString());
+            //    item.SubItems.Add(oku["description"].ToString());
+            //    item.SubItems.Add(oku["isFixible"].ToString());
+
+            //    listViewDataLoss.Items.Add(item);
+            //}
+            //baglanti.Close();
+
+
             foreach (ListViewItem item in listViewDataLoss.Items)
             {
-
-                if (item.SubItems[1].Text == "Fragmentation")
-                {
-                    item.BackColor = Color.FromArgb(255, 252, 131);
-                }
-
-                if (item.SubItems[1].Text == "Unnecessary Object")
-                {
-                    item.BackColor = Color.FromArgb(143, 184, 237);
-                }
-
-                if (item.SubItems[1].Text == "Wrong Configuration")
-                {
-                    item.BackColor = Color.FromArgb(224, 30, 55);
-                }
-                if (item.SubItems[1].Text == "Low Disk Space")
-                {
-                    item.BackColor = Color.FromArgb(128, 237, 153);
-                }
-                if (item.SubItems[1].Text == "Corruption")
-                {
-                    item.BackColor = Color.FromArgb(194, 187, 240);
-                }
-                CountListView(listViewDataLoss, btnDataLoss);
-
+                ColorManager.AssignColor(item);
             }
-
-            //PERFORMANCE tablosu için veritabanındaki verileri okur
-            baglanti.Open();
-            SqlCommand komut2 = new SqlCommand("select * from PERFORMANCE", baglanti);
-            SqlDataReader oku2 = komut2.ExecuteReader();
-            while (oku2.Read())
-            {
-                ListViewItem item2 = new ListViewItem(oku2["id"].ToString());
-                item2.SubItems.Add(oku2["type"].ToString());
-                item2.SubItems.Add(oku2["parentObject"].ToString());
-                item2.SubItems.Add(oku2["objectType"].ToString());
-                item2.SubItems.Add(oku2["object"].ToString());
-                item2.SubItems.Add(oku2["ratio"].ToString());
-                item2.SubItems.Add(oku2["description"].ToString());
-                item2.SubItems.Add(oku2["isFixible"].ToString());
-
-                listViewPerformance.Items.Add(item2);
-
-            }
+            CountListView(listViewDataLoss, btnDataLoss);
 
 
-            baglanti.Close();
-            //renklendirme
+
+            //Renklendirme
+            //foreach (ListViewItem item in listViewDataLoss.Items)
+            //{
+
+            //    if (item.SubItems[1].Text == "Fragmentation")
+            //    {
+            //        item.BackColor = Color.FromArgb(255, 252, 131);
+            //    }
+
+            //    if (item.SubItems[1].Text == "Unnecessary Object")
+            //    {
+            //        item.BackColor = Color.FromArgb(143, 184, 237);
+            //    }
+
+            //    if (item.SubItems[1].Text == "Wrong Configuration")
+            //    {
+            //        item.BackColor = Color.FromArgb(224, 30, 55);
+            //    }
+            //    if (item.SubItems[1].Text == "Low Disk Space")
+            //    {
+            //        item.BackColor = Color.FromArgb(128, 237, 153);
+            //    }
+            //    if (item.SubItems[1].Text == "Corruption")
+            //    {
+            //        item.BackColor = Color.FromArgb(194, 187, 240);
+            //    }
+            //    CountListView(listViewDataLoss, btnDataLoss);
+
+            //}
+
+
+
+
+
+            //string sorgu = @"
+            //                         SELECT * 
+            //                         FROM PERFORMANCE 
+            //                        WHERE (SELECT avg_fragmentation_in_percent 
+            //            FROM sys.dm_db_index_physical_stats(DB_ID(), OBJECT_ID(N'TabloAdi'), NULL, NULL, NULL)) > 50";
+
+            //using (SqlConnection con = new SqlConnection(connectionString))
+            //{
+            //    SqlCommand command = new SqlCommand(sorgu,con);
+            //    con.Open();
+            //    SqlDataReader oku2 = command.ExecuteReader();
+            //    while (oku2.Read())
+            //    {
+            //        ListViewItem item2 = new ListViewItem(oku2["id"].ToString());
+            //        item2.SubItems.Add(oku2["type"].ToString());
+            //        item2.SubItems.Add(oku2["parentObject"].ToString());
+            //        item2.SubItems.Add(oku2["objectType"].ToString());
+            //        item2.SubItems.Add(oku2["object"].ToString());
+            //        item2.SubItems.Add(oku2["ratio"].ToString());
+            //        item2.SubItems.Add(oku2["description"].ToString());
+            //        item2.SubItems.Add(oku2["isFixible"].ToString());
+
+            //        listViewPerformance.Items.Add(item2);
+
+            //    }
+
+            //}
+
+
+            ////PERFORMANCE tablosu için veritabanındaki verileri okur
+            //baglanti.Open();
+            //SqlCommand komut2 = new SqlCommand("select * from PERFORMANCE", baglanti);
+            //SqlDataReader oku2 = komut2.ExecuteReader();
+            //while (oku2.Read())
+            //{
+            //    ListViewItem item2 = new ListViewItem(oku2["id"].ToString());
+            //    item2.SubItems.Add(oku2["type"].ToString());
+            //    item2.SubItems.Add(oku2["parentObject"].ToString());
+            //    item2.SubItems.Add(oku2["objectType"].ToString());
+            //    item2.SubItems.Add(oku2["object"].ToString());
+            //    item2.SubItems.Add(oku2["ratio"].ToString());
+            //    item2.SubItems.Add(oku2["description"].ToString());
+            //    item2.SubItems.Add(oku2["isFixible"].ToString());
+
+            //    listViewPerformance.Items.Add(item2);
+
+            //}
+
+
+            //baglanti.Close();
+
             foreach (ListViewItem item in listViewPerformance.Items)
             {
-
-                if (item.SubItems[1].Text == "Fragmentation")
-                {
-                    item.BackColor = Color.FromArgb(255, 252, 131);
-                }
-
-                if (item.SubItems[1].Text == "Unnecessary Object")
-                {
-                    item.BackColor = Color.FromArgb(143, 184, 237);
-                }
-
-                if (item.SubItems[1].Text == "Wrong Configuration")
-                {
-                    item.BackColor = Color.FromArgb(224, 30, 55);
-                }
-                if (item.SubItems[1].Text == "Low Disk Space")
-                {
-                    item.BackColor = Color.FromArgb(128, 237, 153);
-                }
-                if (item.SubItems[1].Text == "Corruption")
-                {
-                    item.BackColor = Color.FromArgb(194, 187, 240);
-                }
-                CountListView(listViewPerformance, btnPerformance);
-
+                ColorManager.AssignColor(item);
             }
-            //SYSTEM RESOURCE tablosu için veritabanındaki verileri okur
-            baglanti.Open();
-            SqlCommand komut3 = new SqlCommand("select * from SYSTEMRESOURCE", baglanti);
-            SqlDataReader oku3 = komut3.ExecuteReader();
-            while (oku3.Read())
-            {
-                ListViewItem item3 = new ListViewItem(oku3["id"].ToString());
-                item3.SubItems.Add(oku3["type"].ToString());
-                item3.SubItems.Add(oku3["parentObject"].ToString());
-                item3.SubItems.Add(oku3["objectType"].ToString());
-                item3.SubItems.Add(oku3["object"].ToString());
-                item3.SubItems.Add(oku3["ratio"].ToString());
-                item3.SubItems.Add(oku3["description"].ToString());
-                item3.SubItems.Add(oku3["isFixible"].ToString());
+            CountListView(listViewPerformance, btnPerformance);
 
-                listViewSystemResource.Items.Add(item3);
+            CountListView(listViewSystemResource, btnSystemResource);
 
-            }
-            baglanti.Close();
-            //renklendrime
-            foreach (ListViewItem item in listViewSystemResource.Items)
-            {
 
-                if (item.SubItems[1].Text == "Fragmentation")
-                {
-                    item.BackColor = Color.FromArgb(255, 252, 131);
-                }
 
-                if (item.SubItems[1].Text == "Unnecessary Object")
-                {
-                    item.BackColor = Color.FromArgb(143, 184, 237);
-                }
 
-                if (item.SubItems[1].Text == "Wrong Configuration")
-                {
-                    item.BackColor = Color.FromArgb(224, 30, 55);
-                }
-                if (item.SubItems[1].Text == "Low Disk Space")
-                {
-                    item.BackColor = Color.FromArgb(128, 237, 153);
-                }
-                if (item.SubItems[1].Text == "Corruption")
-                {
-                    item.BackColor = Color.FromArgb(194, 187, 240);
-                }
-                CountListView(listViewSystemResource, btnSystemResource);
-            }
+            ////renklendirme
+            //foreach (ListViewItem item in listViewPerformance.Items)
+            //{
+
+            //    if (item.SubItems[1].Text == "Fragmentation")
+            //    {
+            //        item.BackColor = Color.FromArgb(255, 252, 131);
+            //    }
+
+            //    if (item.SubItems[1].Text == "Unnecessary Object")
+            //    {
+            //        item.BackColor = Color.FromArgb(143, 184, 237);
+            //    }
+
+            //    if (item.SubItems[1].Text == "Wrong Configuration")
+            //    {
+            //        item.BackColor = Color.FromArgb(224, 30, 55);
+            //    }
+            //    if (item.SubItems[1].Text == "Low Disk Space")
+            //    {
+            //        item.BackColor = Color.FromArgb(128, 237, 153);
+            //    }
+            //    if (item.SubItems[1].Text == "Corruption")
+            //    {
+            //        item.BackColor = Color.FromArgb(194, 187, 240);
+            //    }
+            //    CountListView(listViewPerformance, btnPerformance);
+
+            //}
+
+
+
+            //    //SYSTEM RESOURCE tablosu için veritabanındaki verileri okur
+            //    baglanti.Open();
+            //    SqlCommand komut3 = new SqlCommand("select * from SYSTEMRESOURCE", baglanti);
+            //    SqlDataReader oku3 = komut3.ExecuteReader();
+            //    while (oku3.Read())
+            //    {
+            //        ListViewItem item3 = new ListViewItem(oku3["id"].ToString());
+            //        item3.SubItems.Add(oku3["type"].ToString());
+            //        item3.SubItems.Add(oku3["parentObject"].ToString());
+            //        item3.SubItems.Add(oku3["objectType"].ToString());
+            //        item3.SubItems.Add(oku3["object"].ToString());
+            //        item3.SubItems.Add(oku3["ratio"].ToString());
+            //        item3.SubItems.Add(oku3["description"].ToString());
+            //        item3.SubItems.Add(oku3["isFixible"].ToString());
+
+            //        listViewSystemResource.Items.Add(item3);
+
+            //    }
+            //    baglanti.Close();
+
+
+
+            ////renklendrime
+            //foreach (ListViewItem item in listViewSystemResource.Items)
+            //{
+
+            //    if (item.SubItems[1].Text == "Fragmentation")
+            //    {
+            //        item.BackColor = Color.FromArgb(255, 252, 131);
+            //    }
+
+            //    if (item.SubItems[1].Text == "Unnecessary Object")
+            //    {
+            //        item.BackColor = Color.FromArgb(143, 184, 237);
+            //    }
+
+            //    if (item.SubItems[1].Text == "Wrong Configuration")
+            //    {
+            //        item.BackColor = Color.FromArgb(224, 30, 55);
+            //    }
+            //    if (item.SubItems[1].Text == "Low Disk Space")
+            //    {
+            //        item.BackColor = Color.FromArgb(128, 237, 153);
+            //    }
+            //    if (item.SubItems[1].Text == "Corruption")
+            //    {
+            //        item.BackColor = Color.FromArgb(194, 187, 240);
+            //    }
+            //    CountListView(listViewSystemResource, btnSystemResource);
+            //}
+
         }
+
+
+
+
         private void btnTaskList_Clicked(object sender, EventArgs e)
         {
             tabControls.SelectedTab = tabPageOverall;
         }
-        public void ReSizeControl(Control control, Control TargetControl)
-        {
-            if (IsControlResizable(control))
-            {
-                int referenceWidth = control.Width;
-                int referenceHeight = 720;
-                float widthRatio = ((float)TargetControl.Width) / (float)referenceWidth;
-                float heightRatio = ((float)Screen.PrimaryScreen.Bounds.Height / (float)referenceHeight);
-                SizeF size = new SizeF();
-                size.Width = widthRatio;
-                size.Height = heightRatio;
-                control.Scale(size);
-                control.Tag = 90;
-                ResizeFont(control, widthRatio);
+        //public void ReSizeControl(Control control, Control TargetControl)
+        //{
+        //    if (IsControlResizable(control))
+        //    {
+        //        int referenceWidth = control.Width;
+        //        int referenceHeight = 720;
+        //        float widthRatio = ((float)TargetControl.Width) / (float)referenceWidth;
+        //        float heightRatio = ((float)Screen.PrimaryScreen.Bounds.Height / (float)referenceHeight);
+        //        SizeF size = new SizeF();
+        //        size.Width = widthRatio;
+        //        size.Height = heightRatio;
+        //        control.Scale(size);
+        //        control.Tag = 90;
+        //        ResizeFont(control, widthRatio);
 
-            }
-        }
-        private void ResizeFont(Control parentControl, float ratio)
-        {
-            foreach (Control control in parentControl.Controls)
-            {
-                if (control.HasChildren)
-                {
-                    ResizeFont(control, ratio);
-                }
-                if (control.Font != null)
-                {
-                    control.Font = new Font(control.Font.FontFamily, control.Font.Size * ratio, control.Font.Style);
-                }
-            }
-        }
-        public bool IsControlResizable(Control control)
-        {
-            if (control.Tag == null)
-            {
-                return true;
-            }
-            else
-            {
-                if (control.Tag.ToString() == "99")
-                {
-                    return false;
-                }
-                else
-                {
-                    return true;
-                }
-            }
-        }
+        //    }
+        //}
+        //private void ResizeFont(Control parentControl, float ratio)
+        //{
+        //    foreach (Control control in parentControl.Controls)
+        //    {
+        //        if (control.HasChildren)
+        //        {
+        //            ResizeFont(control, ratio);
+        //        }
+        //        if (control.Font != null)
+        //        {
+        //            control.Font = new Font(control.Font.FontFamily, control.Font.Size * ratio, control.Font.Style);
+        //        }
+        //    }
+        //}
+        //public bool IsControlResizable(Control control)
+        //{
+        //    if (control.Tag == null)
+        //    {
+        //        return true;
+        //    }
+        //    else
+        //    {
+        //        if (control.Tag.ToString() == "99")
+        //        {
+        //            return false;
+        //        }
+        //        else
+        //        {
+        //            return true;
+        //        }
+        //    }
+        //}
         bool mousedown;
         private void panel2_MouseDown(object sender, MouseEventArgs e)
         {
@@ -320,21 +444,136 @@ namespace trex_deneme
 
             tabControls.SelectedTab = tabPagePerformance;
         }
-
+     
         private void btnDataLoss_Clicked(object sender, EventArgs e)
         {
             tabControls.SelectedTab = tabPageDataLoss;
 
         }
-
+        private bool dataLoaded = false;
         private void btnSystemResource_Clicked(object sender, EventArgs e)
         {
-            tabControls.SelectedTab = tabPageSystemResource;
+           
+           tabControls.SelectedTab = tabPageSystemResource;
+
+
+
+            string driveName = @"C:\"; // Kontrol edilecek disk yolunu belirle
+            long freeSpace = GetFreeDiskSpace(driveName);
+
+            if (freeSpace > 500 * 1024 * 1024) // 500 MB'ın altında ise
+            {
+                if (!dataLoaded) // Veriler henüz yüklenmediyse
+                {
+                    // Veritabanından verileri çek
+                    GetDataFromDatabase();
+                    dataLoaded = true; // Verilerin yüklendiğini işaretle
+                }
+                //else
+                //{
+                //    // Veriler zaten yüklendiği için tekrar yüklemeye gerek yok
+                //    MessageBox.Show("Veriler zaten yüklendi.", "Bilgi", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                //}
+             
+            }
+            else
+            {
+                // Yeterli disk alanı var, kullanıcı bilgilendir
+                MessageBox.Show("Disk alanı 500 MB'dan fazla! Sistem kaynaklarında sorun yok.", "Bilgi", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
+
+            foreach (ListViewItem item in listViewSystemResource.Items)
+            {
+                ColorManager.AssignColor(item);
+            }
+
+            CountListView(listViewSystemResource, btnSystemResource);
+
+
+            ////renklendrime
+            //foreach (ListViewItem item in listViewSystemResource.Items)
+            //{
+
+            //    if (item.SubItems[1].Text == "Fragmentation")
+            //    {
+            //        item.BackColor = Color.FromArgb(255, 252, 131);
+            //    }
+
+            //    if (item.SubItems[1].Text == "Unnecessary Object")
+            //    {
+            //        item.BackColor = Color.FromArgb(143, 184, 237);
+            //    }
+
+            //    if (item.SubItems[1].Text == "Wrong Configuration")
+            //    {
+            //        item.BackColor = Color.FromArgb(224, 30, 55);
+            //    }
+            //    if (item.SubItems[1].Text == "Low Disk Space")
+            //    {
+            //        item.BackColor = Color.FromArgb(128, 237, 153);
+            //    }
+            //    if (item.SubItems[1].Text == "Corruption")
+            //    {
+            //        item.BackColor = Color.FromArgb(194, 187, 240);
+            //    }
+            //    CountListView(listViewSystemResource, btnSystemResource);
+            //}
+
+
         }
 
-        //count işlemi
-        public void CountListView(ListView listView, ButtonNotifications button)
+
+        private long GetFreeDiskSpace(string driveName)
         {
+            DriveInfo drive = new DriveInfo(driveName);
+            return drive.AvailableFreeSpace;
+        }
+
+        private void GetDataFromDatabase()
+        {
+            try
+            {
+                using (SqlConnection connection = new SqlConnection(connectionString))
+                {
+                    string query = "SELECT * FROM SYSTEMRESOURCE"; 
+                    SqlCommand command = new SqlCommand(query, connection);
+                    connection.Open();
+                    SqlDataReader oku3 = command.ExecuteReader();
+
+                   
+                    while (oku3.Read())
+                    {
+                        ListViewItem item3 = new ListViewItem(oku3["id"].ToString());
+                        item3.SubItems.Add(oku3["type"].ToString());
+                        item3.SubItems.Add(oku3["parentObject"].ToString());
+                        item3.SubItems.Add(oku3["objectType"].ToString());
+                        item3.SubItems.Add(oku3["object"].ToString());
+                        item3.SubItems.Add(oku3["ratio"].ToString());
+                        item3.SubItems.Add(oku3["description"].ToString());
+                        item3.SubItems.Add(oku3["isFixible"].ToString());
+                            
+                        listViewSystemResource.Items.Add(item3);
+                    }
+
+                    oku3.Close();
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Veritabanından veri çekerken bir hata oluştu: " + ex.Message, "Hata", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+
+
+        }
+    
+
+
+
+    //count işlemi
+    public void CountListView(ListView listView, ButtonNotifications button)
+        {
+            button.LabelCount = listView.Items.Count.ToString();
+            return;
             int rowCount = 0;
 
             foreach (ListViewItem item in listView.Items)
@@ -425,8 +664,8 @@ namespace trex_deneme
                 //DoListThing(item, item.Checked);
             }
             int returnValue = 0;
-            _ListViewManager[listView.Name] = counter;
-            foreach (int count in _ListViewManager.Values)
+            _listViewManager[listView.Name] = counter;
+            foreach (int count in _listViewManager.Values)
             {
                 returnValue += count;
             }
@@ -437,38 +676,38 @@ namespace trex_deneme
 
 
         //Overall e diğer listview deki satırları ekleyip çıkarma işlemi
-        private void DoListThing(ListViewItem item, bool isChecked)
-        {
+        //private void DoListThing(ListViewItem item, bool isChecked)
+        //{
 
-            string satir = "";
-            foreach (ListViewItem.ListViewSubItem subItem in item.SubItems)
-            {
-                satir += subItem.Text + " ";
-            }
+        //    string satir = "";
+        //    foreach (ListViewItem.ListViewSubItem subItem in item.SubItems)
+        //    {
+        //        satir += subItem.Text + " ";
+        //    }
 
-            OverviewItems.Contains(satir);
-            if (isChecked)
-            {
-                if (!OverviewItems.Contains(satir))
-                {
-                    OverviewItems.Add(satir);
-                }
-            }
-            else
-            {
-                if (OverviewItems.Contains(satir))
-                {
-                    OverviewItems.Remove(satir);
-                }
-            }
-            //her sefeerinde yeni liste oluşturuyor ? sorun çıkarır mı
-            listViewOverall.Items.Clear();
-            foreach (string text in OverviewItems)
-            {
+        //    OverviewItems.Contains(satir);
+        //    if (isChecked)
+        //    {
+        //        if (!OverviewItems.Contains(satir))
+        //        {
+        //            OverviewItems.Add(satir);
+        //        }
+        //    }
+        //    else
+        //    {
+        //        if (OverviewItems.Contains(satir))
+        //        {
+        //            OverviewItems.Remove(satir);
+        //        }
+        //    }
+        //    //her sefeerinde yeni liste oluşturuyor ? sorun çıkarır mı
+        //    listViewOverall.Items.Clear();
+        //    foreach (string text in OverviewItems)
+        //    {
 
-                listViewOverall.Items.Add(text);
-            }
-        }
+        //        listViewOverall.Items.Add(text);
+        //    }
+        // }
 
         /////////////////////////
         private void UpdateSelectedRowCount(ButtonNotifications button)
@@ -514,8 +753,8 @@ namespace trex_deneme
                 //  DoListThing(item, item.Checked);
             }
             int returnValue = 0;
-            _ListViewManager[listView.Name] = counter;
-            foreach (int count in _ListViewManager.Values)
+            _listViewManager[listView.Name] = counter;
+            foreach (int count in _listViewManager.Values)
             {
                 returnValue += count;
             }
@@ -558,37 +797,36 @@ namespace trex_deneme
 
         private void listViewDataLoss_ItemChecked(object sender, ItemCheckedEventArgs e)
         {
-           // UpdateSelectedRowCount(btnTaskList);
+          // UpdateSelectedRowCount(btnTaskList);
             UpdateAddQueueCount(btnAddQueue);
-
-            
 
             ////////////////////////////////////
             /// buton add queue ye tıkladıktan sonra listview overall'e eklemek için 
-            if (!checkedItems.ContainsKey(e.Item))
+            if (!_checkedItems.ContainsKey(e.Item))
             {
-                checkedItems.Add(e.Item, e.Item.Checked); // CheckBox durumunu sakla
+                _checkedItems.Add(e.Item, e.Item.Checked); 
             }
             else
             {
-                checkedItems[e.Item] = e.Item.Checked; // CheckBox durumunu güncelle
+                _checkedItems[e.Item] = e.Item.Checked; 
             }
-            // Eğer CheckBox işaret durumu değiştiyse, listViewOverall'deki ilgili öğeyi güncelle
+            // CheckBox işaret durumu değiştiyse listViewOverall güncelle
             if (!e.Item.Checked)
             {
                 foreach (ListViewItem item in listViewOverall.Items)
                 {
                     if (item.Text == e.Item.Text)
                     {
-                        listViewOverall.Items.Remove(item);
+                 //       listViewOverall.Items.Remove(item);
                         break;
                     }
                 }
+                
             }
 
         }
 
-      
+
         private void listViewOverall_ItemChecked_1(object sender, ItemCheckedEventArgs e)
         {
             UpdateOverallCount(btnFixit);
@@ -597,33 +835,39 @@ namespace trex_deneme
         // addqueue butonuna tıkladıktan sonra listeye eklemek için 
         private void btnAddQueue_Clicked(object sender, EventArgs e)
         {
-            //UpdateAddQueueCount(btnAddQueue);
+            UpdateAddQueueCount(btnAddQueue);
             UpdateSelectedRowCount(btnTaskList);
-            UpdateOverallCount(btnFixit);
+            listViewOverall.Items.Clear();// her seferinde listeyi sıfırdan eklememesi için
 
             // her öğe için kontrol
-            foreach (var pair in checkedItems)
+            foreach (var pair in _checkedItems)
             {
-                // Eğer CheckBox işaretliyse ve listViewOverall'de yoksa, öğeyi listViewOverall'e ekle
-                if (pair.Value && !listViewOverall.Items.ContainsKey(pair.Key.Text))
+                // CheckBox işaretliyse ve listViewOverall'de yoksa listViewOverall'e ekle
+                if (pair.Value )
                 {
                     ListViewItem newItem = (ListViewItem)pair.Key.Clone();
-                    listViewOverall.Items.Add(newItem);
+
                     newItem.Checked = false;
-                    
+                    if (!listViewOverall.Items.Contains(newItem)) { 
+                    listViewOverall.Items.Add(newItem);
+                    }
+
                     overallItems.Add(newItem);
+                    
                 }
                 // listViewOverall'den kaldır
-                else if (!pair.Value && listViewOverall.Items.ContainsKey(pair.Key.Text))
-                {
-                    listViewOverall.Items.RemoveByKey(pair.Key.Text);
-                    // listViewOverall'den kaldırılan öğeyi overallItems koleksiyonundan kaldırma
-                    ListViewItem removedItem = overallItems.Find(item => item.Text == pair.Key.Text);
-                    overallItems.Remove(removedItem);
-                }
+                //else if (!pair.Value )
+                //{
+                //  //  listViewOverall.Items.RemoveByKey(pair.Key.Text);
+                //    // listViewOverall'den kaldırılan öğeyi overallItems koleksiyonundan kaldırma
+                //    ListViewItem removedItem = overallItems.Find(item => item.Text == pair.Key.Text);
+                //    listViewOverall.Items.Remove(removedItem);
+                //    overallItems.Remove(removedItem);
+                //}
+                
             }
-           
-            checkedItems.Clear();
+
+          //  checkedItems.Clear();
 
         }
         // listViewOverall'deki öğeleri yeniden yükleme
@@ -639,11 +883,25 @@ namespace trex_deneme
             {
                 // item.Selected = false;
                 item.Checked = false;
+                
             }
 
           
         }
 
-        
+        private void FormMain_Resize(object sender, EventArgs e)
+        {
+           // controlResizer.ReSizeControl(this, this);
+        }
+
+        private void btnPerformance_Load(object sender, EventArgs e)
+        {
+
+        }
+
+        private void btnDataLoss_Click(object sender, EventArgs e)
+        {
+
+        }
     }
 }  

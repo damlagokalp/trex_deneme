@@ -2,7 +2,7 @@
 
 namespace trex_deneme
 {
-    partial class Form1
+    partial class FormMain
     {
         /// <summary>
         /// Required designer variable.
@@ -30,7 +30,7 @@ namespace trex_deneme
         /// </summary>
         private void InitializeComponent()
         {
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormMain));
             this.label7 = new System.Windows.Forms.Label();
             this.label5 = new System.Windows.Forms.Label();
             this.panel2 = new System.Windows.Forms.Panel();
@@ -749,6 +749,7 @@ namespace trex_deneme
             this.btnPerformance.Size = new System.Drawing.Size(272, 36);
             this.btnPerformance.TabIndex = 15;
             this.btnPerformance.Clicked += new System.EventHandler(this.btnPerformance_Clicked);
+            this.btnPerformance.Load += new System.EventHandler(this.btnPerformance_Load);
             // 
             // btnDataLoss
             // 
@@ -767,6 +768,7 @@ namespace trex_deneme
             this.btnDataLoss.Size = new System.Drawing.Size(272, 36);
             this.btnDataLoss.TabIndex = 14;
             this.btnDataLoss.Clicked += new System.EventHandler(this.btnDataLoss_Clicked);
+            this.btnDataLoss.Click += new System.EventHandler(this.btnDataLoss_Click);
             // 
             // buttonNotifications1
             // 
@@ -786,7 +788,7 @@ namespace trex_deneme
             this.buttonNotifications1.Size = new System.Drawing.Size(275, 43);
             this.buttonNotifications1.TabIndex = 22;
             // 
-            // Form1
+            // FormMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -796,9 +798,10 @@ namespace trex_deneme
             this.Controls.Add(this.panel1);
             this.Controls.Add(this.panel2);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
-            this.Name = "Form1";
+            this.Name = "FormMain";
             this.Text = "TREX OPTIMIZER";
             this.Load += new System.EventHandler(this.Form1_Load);
+            this.Resize += new System.EventHandler(this.FormMain_Resize);
             this.panel2.ResumeLayout(false);
             this.SysButtonsPnl.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
